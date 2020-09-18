@@ -1,0 +1,53 @@
+
+ {% extends "layout.html" %}
+ {% block heading %}
+<title>{{ title }}</title>
+ {% endblock %}
+   {% block body %}
+
+ 
+          <form method= "POST"  action=" "  enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+         
+                
+                    {{ form.title .label() }}
+                    {% if form.title.errors %}
+                        {{ form.title() }}
+                       
+                            {% for error in form.title.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.title() }}
+                    {% endif %}
+              
+              
+                    {{ form.content.label() }}
+                    {% if form.content.errors %}
+                        {{ form.content() }}
+                       
+                            {% for error in form.content.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                      
+                    {% else %}
+                        {{ form.content() }}
+                    {% endif %}
+                   
+                   {{ form.tag.label() }}
+                    {{ form.tag() }}
+          
+                   {{ form.picture.label() }}
+                    {{ form.picture() }}
+                        
+            
+            
+                {{ form.submit(class="btn btn-outline-info") }}
+         
+        </form>
+ 
+
+  
+    
+ {% endblock %}

@@ -1,0 +1,26 @@
+
+ {% extends "layout.html" %}
+ {% block heading %}
+ HOME PAGE
+{% endblock %}
+
+   {% block body%}
+   <h1></h1>
+
+
+<h2>{{ post.author.username }}</h2>
+  <img class=" " src="{{ url_for('static', filename='post_pics/'+ post.post_file) }}">
+
+    <h1> {{ post.title}}  <small> -{{ post.date_posted.strftime('%Y-%m-%d') }} </small></h1>
+    <p> {{post.tag}}</p>
+
+     <p> {{post.content}}</p>
+
+     {% if post.author == current_user %}
+
+      <a class=""  href="{{ url_for('update_post',post_id=post.id)}}"><button>Update</button></a>
+      <form  action="{{ url_for ('delete_post', post_id=post.id)}}"  method="POST" ><button>Delete</button></form>
+
+
+ {% endif %}
+ {% endblock %}

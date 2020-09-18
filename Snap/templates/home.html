@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+
+
+
+    <title>Snap | Home</title>
+    <link href="./../static/css/layout.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+    <div class="nav-bar">
+
+        <!-- <input class = "input-white"  class="sbar" type="text" name="searchbar" value="search.."> -->
+
+        <div class="nav-section-0">
+            <div class="search-container">
+                <div class="search-bar">
+                    <form class="" action="{{url_for('search')}}" method="GET">
+                        <input class="input-white" type="text" name="query" id="query">
+
+                        <button class="button-white" type="submit">search</button>
+                    </form>
+                </div>
+
+                {%for suser in susers%}
+                <h1>{{ suser.username }}</h1>
+                {% endfor %}
+
+
+                <div hidden style="position: absolute;  " class="search-results">
+                    <fieldset style="opacity: 1.0;position: absolute; background-color: White;  ">
+                        {% for users in user %}
+                        <h1>{{ users.username}}</h1>
+                        {% if current_user.isfollowingto(users.id) %}
+                        <button class="button-white" user_id="{{ users.id }}" action="unfollow" type="submit"
+                            class="post-button fbtn3{{ users.id}}">unfollow </button>
+                        <span>following</span>
+                        {% else %}
+                        <button class="button-white" user_id="{{ users.id }}" action="follow" type="submit"
+                            class="post-button fbtn3{{ users.id}}">follow
+                        </button>
+                        <span>follow</span>
+                        {% endif %}
+                        <button class="button-white" hidden user_id="{{ users.id }}" action="unfollow" type="submit"
+                            class="post-button fbtn2{{ users.id}}">unfollow </button>
+                        <button class="button-white" hidden user_id="{{ users.id }}" action="follow" type="submit"
+                            class="post-button fbtn1{{ users.id}}">follow </button>
+                        <br>
+                        {% endfor  %}
+                    </fieldset>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="nav-section-1">
+            <nav>
+                <ul class="nav-section-1-list">
+                    <li> <a href="{{ url_for('new_post')}}"><button class="button-white">Create Post</button></a></li>
+                    <li> <a href="{{ url_for('account')}}"><button class="button-white">Account</button></a></li>
+                    <li> <a href="{{ url_for('home')}}"><button class="button-white">home</button></a></li>
+                    <li> <a href="{{ url_for('logout')}}"><button class="button-white">Logout</button></a></li>
+                    <li> <a href="{{ url_for('about')}}"><button class="button-white">about</button></a> </li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+
+
+    <form>
+
+        <div class="main-section">
+
+            <div class="posts-container">
+                {% for post in posts %}
+
+                <div class="post">
+                    <div class="post-author">
+                        <img src="static/profile_pics/{{ post.author.image_file }}"></img>
+                        <a href="{{url_for('user_account',post_id=post.id)}}">
+                            <p>{{post.author.username}} <p style="color: burlywood; font-size: 16px;"> is feeling <p>
+                                    </p>
+                        </a>
+                        <p>{{ post.tag}}</p>
+                        <p>| {{ post.date_posted.strftime('%Y-%m-%d')}}</p>
+                        <div class="follow-block">
+                            <button hidden user_id="{{ post.author.id }}" action="unfollow" type="submit"
+                                class="post-button  uflo fbtn2{{ post.author.id}}"><span
+                                    class="glyphicon glyphicon-send"></span>
+                                unfollow</button>
+                            <button hidden user_id="{{ post.author.id }}" action="follow" type="submit"
+                                class="post-button flo fbtn1{{ post.author.id}}"><span
+                                    class="glyphicon glyphicon-send"></span>
+                                follow</button>
+                        </div>
+                    </div>
+
+                    <div class="post-title">
+                        <div class="post-text">
+                            <h1>{{ post.title}}</h1>
+                        </div>
+                    </div>
+
+                    <div class="post-image-block">
+                        <img class=" " src="{{ url_for('static', filename='post_pics/'+ post.post_file) }}">
+                    </div>
+
+
+                    <div class="post-content-text">
+                        <p>{{ post.content}}</p>
+                    </div>
+
+
+                    {% if current_user.isfollowingto(post.author.id) %}
+                    <script type="text/javascript">
+                        (function () {
+                            $('.fbtn1' + {{post.author.id | safe}}).hide()
+                            $('.fbtn2' + {{post.author.id | safe}}).show()
+                        })();
+                    </script>
+                    {% else %}
+                    <script type="text/javascript">
+                        (function () {
+                            $('.fbtn2' + {{post.author.id | safe}}).hide()
+                            $('.fbtn1' + {{post.author.id | safe}}).show()
+                        })();
+                    </script>
+                    {% endif %}
+
+
+                    <div class="post-bottom">
+
+                        <div class="like-block">
+                            <p type="text" class="username form-control" placeholder="User Name">👍 Likes &nbsp;&nbsp;
+                            </p>
+
+                            <div>
+                                <p class="lkes-count{{ post.id}}">{{ post.likes.count() }}</p>
+                            </div>
+                        </div>
+                        <div class="like-button-block">
+
+                            <button hidden post_id="{{ post.id }}" action="unlike" type="submit"
+                                class="btn btn2{{ post.id}}"><span class="glyphicon glyphicon-send"></span>
+                                unlike</button>
+                            <button hidden post_id="{{ post.id }}" action="like" type="submit"
+                                class=" btn btn1{{ post.id}}"><span class="glyphicon glyphicon-send"></span>
+                                like</button>
+
+                            {% if current_user.has_liked_post(post) %}
+                                <script type="text/javascript">
+                                    (function () {
+                                        $('.btn1' + {{post.id | safe}}).hide()
+                                        $('.btn2' + {{post.id | safe}}).show()
+                                    })();
+                                </script>
+                                {% else %}
+                                <script type="text/javascript">
+                                    (function () {
+                                        $('.btn2' + {{post.id | safe}}).hide()
+                                        $('.btn1' + {{post.id | safe}}).show()
+                                    })();
+                                </script>
+                                {% endif %}
+                        </div>
+                    </div>
+                    <div class="comment-field-block">
+                        <form class="comment-form{{post.id}}" action="" method="POST">
+
+                            <input type="text" class="message{{post.id}} comment-input-box form-control"
+                                placeholder=" comment..">
+                            <button type="submit" user_nameis="{{ post.author.username }}" post_id="{{ post.id }}"
+                                class="btnc{{post.id}}   cmt"> Send &nbsp; 💬</button>
+                        </form>
+                    </div>
+
+
+
+                    <div class="comments-block">
+                        {% for comm in post.post_comment_list(post) %}
+                        <div class="comment_holder ">
+                            <p>{{ comm.comment_author.author.username }}: </p>
+                            <p>{{ comm.comment}}</p>
+                        </div>
+                        {% endfor %}
+                        <div class="comment_holder comment_holder{{post.id}}"></div>
+                    </div>
+
+
+
+
+                    <script>
+                        var socket = io.connect('http://' + document.domain + ':' + location.port)
+                        // broadcast a message
+
+
+                        socket.on('connect', function () {
+
+                            socket.emit('my event_is', {
+                                data: 'User Connected',
+                                async: true
+
+                            })
+
+
+
+                            let post_idis = $('.cmt').attr('post_id')
+
+
+                            var form = $('.btnc{{post.id}}').on('click', function (e) {
+
+                                e.preventDefault()
+
+                                let user_name = $('.btnc{{post.id}}').attr('user_nameis')
+
+                                let post_id = $('.btnc{{post.id}}').attr('post_id')
+
+
+                                let user_input = $('input.message{{post.id}}').val()
+
+                                socket.emit('my_comment event', {
+
+                                    user_name: user_name,
+
+                                    message: user_input,
+
+                                    post_id: post_id
+
+                                })
+
+
+                                // empty the input field
+
+                                $('input.message').val('')
+
+                            })
+
+
+
+                        })
+                    </script>
+
+                </div>
+
+
+                {% endfor %}
+            </div>
+        </div>
+        </div>
+
+
+
+
+
+
+
+
+        <script>
+            var form = $('.post-button{{post_id}}').on('click', function (e) {
+
+                e.preventDefault()
+
+                let user_id = $(this).attr('user_id')
+                let action = $(this).attr('action')
+
+
+                socket.emit('my fevent', {
+
+                    user_id: user_id,
+
+                    action: action
+                })
+
+            })
+
+
+
+
+            var form = $('.btn{{post_id}}').on('click', function (e) {
+
+                e.preventDefault()
+
+                let post_id = $(this).attr('post_id')
+                let action = $(this).attr('action')
+
+                socket.emit('my event', {
+
+                    post_id: post_id,
+
+                    action: action
+                })
+
+            })
+
+
+
+            $('.sbar').on('focus', function (e) {
+                e.preventDefault()
+                console.log('in');
+                $('.searchlist').show()
+                $('.sbar').val('')
+
+            })
+
+            $(' .searchlist').on('click', function (e) {
+                e.preventDefault()
+                console.log('out');
+                $('.searchlist').hide()
+                $('.sbar').val('search..')
+
+            })
+
+
+
+
+
+
+
+            socket.on('my fresponse', function (msg) {
+
+                console.log(msg)
+
+                $('.fbtn3' + msg.user_id).hide()
+
+                if (msg.action == 'follow') {
+
+                    $('.fbtn1' + msg.user_id).hide()
+                    $('.fbtn2' + msg.user_id).show()
+                    console.log(454545)
+
+
+
+                }
+                if (msg.action == 'unfollow') {
+
+                    $('.fbtn1' + msg.user_id).show()
+                    $('.fbtn2' + msg.user_id).hide()
+                    console.log(1111111)
+
+                }
+
+            })
+
+
+            // capture message
+
+            socket.on('my response', function (msg) {
+
+                console.log(msg)
+
+                $('.btn3' + msg.post_id).hide()
+                if (msg.action == 'like') {
+
+                    $('.btn1' + msg.post_id).hide()
+                    $('.btn2' + msg.post_id).show()
+
+
+                    let cl = $('p.lkes-count' + msg.post_id).text()
+
+                    $('p.lkes-count' + msg.post_id).delay(1000).text(parseInt(cl) + 1)
+
+                }
+                if (msg.action == 'unlike') {
+
+                    $('.btn1' + msg.post_id).show()
+                    $('.btn2' + msg.post_id).hide()
+                    let cl = $('p.lkes-count' + msg.post_id).text()
+
+                    $('p.lkes-count' + msg.post_id).delay(1000).text(parseInt(cl) - 1)
+
+                }
+
+            })
+
+            // capture message
+
+            socket.on('my_comment response', function (msg) {
+
+                console.log(msg)
+                $('div.comment_holder' + msg.post_id).append(' <p>' + msg.user_name + ': </p><p>' + msg
+                    .message + '</p>')
+                $('input[type="text"],textarea').val('');
+            })
+        </script>
+
+
+
+
+
+
+
+
+</body>
+
+</html>

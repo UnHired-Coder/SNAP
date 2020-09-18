@@ -1,0 +1,465 @@
+body {
+    background-color: white;
+    text-align: center;
+    margin: 20px 20px;
+    padding: 20px 20px;
+}
+
+
+.login-form {
+    text-align: center;
+    display: block;
+    background-color: antiquewhite;
+    border-radius: 10px;
+    width: 300px;
+    margin: auto auto;
+}
+
+.login-form form {
+    text-align: center;
+    padding: 40px 40px;
+}
+
+.login-form form legend {
+    display: block;
+    margin: 10px 10px;
+    font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+}
+
+.buttons-secondary {
+    margin-top: 100px;
+}
+
+.buttons-secondary a {
+    text-decoration: none;
+
+}
+
+.buttons-secondary a p {
+    text-decoration: none;
+    color: blue;
+    margin: 5px 5px;
+    font-size: 16px;
+    display: block;
+}
+
+.input-field {
+    background-color: white;
+    height: 50px;
+    width: 180px;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 5px;
+    padding-left: 10px;
+    margin: 5px 5px;
+    align-self: center;
+    display: block;
+}
+
+.submit-field {
+    background-color: brown;
+    height: 40px;
+    width: 70px;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    padding: 5px 5px;
+    margin: auto 60px;
+    margin-top: 100px;
+    outline: none !important;
+    transform: scale(1.0);
+    transition-duration: 0.5s;
+}
+
+.submit-field:hover {
+    transform: scale(1.1);
+    transition-duration: 0.5s;
+}
+
+
+
+
+.nav-bar {
+    max-height: 100px;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    background-color: white;
+    box-shadow: 2px 2px 2px darkgrey;
+}
+
+.nav-section-0 {
+    display: inline-block;
+    width: 30%;
+    padding: 20px 20px;
+}
+
+.search-container {
+    float: right;
+    margin-right: 100px;
+    width: 300px;
+}
+
+.input-white {
+    background-color: rgb(225, 229, 248);
+    height: 30px;
+    width: auto;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 5px;
+    padding-left: 10px;
+    margin: 5px 5px;
+    align-self: center;
+    display: inline-block;
+}
+
+.input-white:focus {
+    border: none;
+}
+
+.button-white {
+    display: inline-block;
+    background-color: white;
+    height: 40px;
+    border: none;
+    color: black;
+    border-radius: 10px;
+    padding: 5px 5px;
+    margin: 10px 10px;
+    outline: none !important;
+    box-shadow: 10px 10px 10px burlywood;
+    transform: scale(1.0);
+    transition-duration: 0.2s;
+}
+
+.button-white:hover {
+    transform: scale(1.06);
+    transition-duration: 0.2s;
+}
+
+
+
+
+.nav-section-1 {
+    float: right;
+    /* display: inline-block; */
+    width: 30%;
+    padding: 1px;
+}
+
+
+
+.nav-section-1-list {
+    list-style: none;
+    display: inline-block;
+}
+
+
+
+.nav-section-1-list li {
+    display: inline-block;
+}
+
+
+
+.register-form {
+    text-align: center;
+    display: block;
+    background-color: antiquewhite;
+    border-radius: 10px;
+    width: 300px;
+    margin: auto auto;
+}
+
+.register-form form {
+    text-align: center;
+    padding: 40px 40px;
+}
+
+.register-form form legend {
+    display: block;
+    margin: 10px 10px;
+    font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+}
+
+
+
+.post-button {
+    display: inline-block;
+    background-color: white;
+    height: 40px;
+    border: none;
+    color: black;
+    border-radius: 8px;
+    padding: 8px 8px;
+    margin: 2px 2px;
+    outline: none !important;
+    box-shadow: 5px 5px 5px rgb(195, 197, 197);
+    transform: scale(1.0);
+    transition-duration: 0.2s;
+}
+
+.post-button:hover {
+    transform: scale(1.06);
+    transition-duration: 0.2s;
+}
+
+
+.main-section {
+    width: 100%;
+    text-align: center;
+}
+
+.post {
+    text-align: center;
+    padding: 10px 10px;
+    margin: 10px 10px;
+    background-color: white;
+    box-shadow: 2px 2px 2px gray;
+}
+
+.posts-container {
+    text-align: center;
+    background-color: whitesmoke;
+    padding: 8px 8px;
+    width: 600px;
+    display: inline-block;
+    box-shadow: 2px 2px 2px gray;
+}
+
+
+.post-author {
+    display: block;
+    width: 100%;
+    float: left;
+    border: 4px none black;
+}
+
+.post-author a {
+    text-decoration: none;
+}
+
+.post-author img {
+    text-decoration: none;
+    float: left;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    margin: 5px 5px;
+    border-color: 4px inset brown;
+}
+
+.post-author a p {
+    color: brown;
+    float: left;
+    font-size: 25px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none;
+    margin: 2px 2px;
+    vertical-align: bottom;
+}
+
+.post-author p {
+    float: left;
+    font-size: 16px;
+    color: burlywood;
+    font-weight: bold;
+    margin: 5px 5px;
+    vertical-align: bottom;
+}
+
+.post-content {
+    color: darkgray;
+}
+
+
+.post-title {
+    color: burlywood;
+    font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    margin: 10px 10px;
+    max-height: 100px;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+
+.post-text {
+    float: left;
+    width: 100%;
+}
+
+.follow-block {
+    float: right;
+    width: 20%;
+}
+
+
+.post-image-block {
+    display: block;
+    background-color: rgb(200, 228, 228);
+    margin: 5px 5px;
+    margin: 15px 15px;
+    width: auto;
+    text-align: center;
+}
+
+.post-content-text {
+    display: block;
+    text-align: justify;
+    font-size: 16px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: black;
+    width: auto;
+    max-height: 200px;
+}
+
+.post-content-text p {
+    text-align: justify;
+    text-overflow: ellipsis;
+}
+
+
+.post-bottom {
+    padding: 2px 2px;
+    box-shadow: 1px 1px 1px darkgrey;
+    display: block;
+    margin: 4px 4px;
+    margin-bottom: 20px;
+    height: 100px;
+}
+
+.like-block {
+    width: 80px;
+    float: left;
+    margin: 2px 2px;
+    padding: 2px 2px;
+}
+
+.like-block div p {
+    font-size: 16px;
+    color: brown;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    float: left;
+}
+
+.like-block p {
+    float: left;
+    font-size: 16px;
+    color: brown;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.like-button-block {
+    width: 120px;
+    float: left;
+    padding: 5px 5px;
+    margin: 5px 5px;
+}
+
+.like-button-block button {
+    float: left;
+    background-color: white;
+    height: 40px;
+    border: none;
+    color: black;
+    border-radius: 8px;
+    padding: 8px 8px;
+    margin: 2px 2px;
+    outline: none !important;
+    box-shadow: 5px 5px 5px rgb(195, 197, 197);
+    transform: scale(1.0);
+    transition-duration: 0.2s;
+    width: 100px;
+}
+
+.comment-field-block {
+    display: block;
+    height: 60px;
+}
+
+.comment-field-block input {
+    background-color: rgb(206, 250, 252);
+    height: 30px;
+    width: 250px;
+    border: none;
+    border-radius: 10px;
+    padding: 5px 5px;
+    padding-left: 10px;
+    margin: 5px 5px;
+    align-self: center;
+    display: inline-block;
+}
+
+.comment-field-block button {
+    background-color: white;
+    height: 30px;
+    border: none;
+    color: black;
+    border-radius: 8px;
+    padding: 8px 8px;
+    margin: 2px 2px;
+    outline: none !important;
+    box-shadow: 1px 1px 1px rgb(195, 197, 197);
+    transform: scale(1.0);
+    transition-duration: 0.2s;
+    width: 100px;
+}
+
+.comments-block {
+    max-height: 200px;
+    padding-top: 20px;
+    overflow: scroll;
+    overflow-x: hidden;
+    /* Hide horizontal scrollbar */
+    scrollbar-width: 10px;
+
+}
+
+.comments-block::-webkit-scrollbar {
+    width: 12px;
+    /* width of the entire scrollbar */
+}
+
+.comments-block::-webkit-scrollbar-track {
+    background: white;
+    /* color of the tracking area */
+}
+
+.comments-block::-webkit-scrollbar-thumb {
+    background-color: grey;
+    /* color of the scroll thumb */
+    border-radius: 20px;
+    /* roundness of the scroll thumb */
+    border: 3px solid white;
+    /* creates padding around scroll thumb */
+}
+
+.comments-block {
+    text-align: left;
+    padding: 4px 4px;
+    margin: 4px 4px;
+}
+
+.comment_holder {
+    margin: 2px 2px;
+    padding: 2px 4px;
+    box-shadow: 1px 1px 4px 1px lightgray;
+}
+
+.comment_holder p {
+    display: inline-block;
+    width: auto;
+    font-size: 15px;
+    color: grey;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; 
+}
+
+.comment_holder :first-child {
+    font-size: 18px;
+    font-weight: bold;
+    color: brown;
+}

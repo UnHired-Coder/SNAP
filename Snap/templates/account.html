@@ -1,0 +1,185 @@
+{% extends "layout.html" %}
+
+
+{%block body%}
+{% if current_user.image_url %}
+<img src="{{current_user.image_url}}">
+{% else %}
+<img src=" static/profile_pics/{{ current_user.image_file }} ">
+{% endif %}
+
+<h1>{{ current_user.username }}</h1>
+<ul>
+  <li>Email:{{current_user.email}}</li>
+
+<li>Bio:{{current_user.bio}}</li>
+<li>Followers:{{current_user.following_by.count()}}</li>
+<li>Following:{{current_user.following_to.count()}}</li>
+<li>Link:{{current_user.Link_facebook}}</li>
+</ul>
+
+
+
+
+<form method= "POST"   id="form"  enctype="multipart/form-data">
+
+      <button    id="closebutton" class="button" onclick="closeForm()">Close</button>
+        {{ form.hidden_tag() }}
+
+
+
+
+         <fieldset class="form-group">
+
+
+
+
+             <legend >Account Info</legend>
+
+
+
+       <div class="content-section">
+           <div>
+            {{ form.username.label(class="label") }}
+
+
+            {% if form.username.errors %}
+
+            {{ form.username(class="input")}}
+
+               <div >
+
+                      {% for error in form.username.errors %}
+
+                      <span>{{ error }}</span>
+
+                      {% endfor %}
+
+               </div>
+
+                      {% else %}
+
+                      {{ form.username(class="input")}}
+
+                      {% endif %}
+
+             </div>
+
+
+
+          <div class="form-group">
+
+              {{ form.email.label(class="label") }}
+
+              {% if form.email.errors %}
+
+              {{ form.email(class="input") }}
+
+               <div >
+
+                   {% for error in form.email.errors %}
+
+                    <span>{{ error }}</span>
+
+                   {% endfor %}
+
+                </div>
+
+               {% else %}
+
+               {{ form.email(class="input") }}
+
+               {% endif %}
+
+            </div>
+            <div class="form-group">
+
+                {{ form.bio.label(class="label") }}
+
+                {% if form.bio.errors %}
+
+                {{ form.bio(class="input") }}
+
+                 <div >
+
+                     {% for error in form.bio.errors %}
+
+                      <span>{{ error }}</span>
+
+                     {% endfor %}
+
+                  </div>
+
+                 {% else %}
+
+                 {{ form.bio(class="input") }}
+
+                 {% endif %}
+
+              </div>
+              <div class="form-group">
+
+                  {{ form.link.label(class="label") }}
+
+                  {% if form.link.errors %}
+
+                  {{ form.link(class="input") }}
+
+                   <div >
+
+                       {% for error in form.link.errors %}
+
+                        <span>{{ error }}</span>
+
+                       {% endfor %}
+
+                    </div>
+
+                   {% else %}
+
+                   {{ form.link(class="input") }}
+
+                   {% endif %}
+
+                </div>
+
+
+
+
+      <div class="form-group">
+
+           {{ form.picture.label(class="label") }}
+
+           {{ form.picture(class="input") }}
+
+             {% if form.picture.errors %}
+
+                {% for error in form.picture.errors %}
+
+                    <span>{{ error }}</span>
+
+                {% endfor %}
+
+             {% endif%}
+       </div>
+
+
+
+
+       <div class="form-group">
+
+           {{ form.submit() }}
+
+       </div>
+
+</div>
+
+
+</fieldset>
+
+</form>
+
+
+
+
+{%endblock%}

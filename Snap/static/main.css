@@ -1,0 +1,23 @@
+.nav_link {
+color:red;
+text-decoration: none;
+  padding: 0px 200px 2px 0px;
+
+
+}
+
+body {
+color: red;
+
+}
+
+
+.btn {
+color:red;
+}
+
+
+.nav_link:hover{
+color:white;
+
+}
