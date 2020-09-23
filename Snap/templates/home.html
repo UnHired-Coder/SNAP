@@ -206,7 +206,7 @@
                             <p>{{ comm.comment}}</p>
                         </div>
                         {% endfor %}
-                        <div class="comment_holder comment_holder{{post.id}}"></div>
+                        <div class="comment_holder_new comment_holder_new{{post.id}}"></div>
                     </div>
 
 
@@ -398,10 +398,13 @@
             // capture message
 
             socket.on('my_comment response', function (msg) {
+                
+                if( $.trim(msg.message).length == 0 )
+                 return;
 
                 console.log(msg)
-                $('div.comment_holder' + msg.post_id).append(' <p>' + msg.user_name + ': </p><p>' + msg
-                    .message + '</p>')
+                $('div.comment_holder_new' + msg.post_id).append('<div class="comment_holder "> <p>' + msg.user_name + ': </p><p>' + msg
+                    .message + '</p> </div>')
                 $('input[type="text"],textarea').val('');
             })
         </script>

@@ -411,6 +411,7 @@ body {
 
 .comments-block {
     max-height: 200px;
+    display: block;
     padding-top: 20px;
     overflow: scroll;
     overflow-x: hidden;
@@ -451,7 +452,7 @@ body {
 }
 
 .comment_holder p {
-    display: inline-block;
+    display: block;
     width: auto;
     font-size: 15px;
     color: grey;
@@ -463,3 +464,5 @@ body {
     font-weight: bold;
     color: brown;
 }
+
+
