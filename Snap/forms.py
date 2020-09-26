@@ -55,7 +55,7 @@ class LoginForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('content', validators=[DataRequired()])
-    picture = FileField('Update Profile Picture', validators=[
+    picture = FileField('Update Picture', validators=[
                         FileAllowed(['jpg', 'png'])])
     tag = SelectField(
         'Tag', choices=[( '😀 Happy', '😀 Happy'), ('😔 Sad', '😔 Sad'), ('😤 Angry', '😤 Angry')])

@@ -1,53 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
 
- {% extends "layout.html" %}
- {% block heading %}
-<title>{{ title }}</title>
- {% endblock %}
-   {% block body %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snap | Create Post </title>
 
+    <link href="./../static/css/layout.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+</head>
+
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <a style="border:none" href="{{ url_for('home')}}">&#8249;<button class="back-button" >&#8249;</button></a>  
  
-          <form method= "POST"  action=" "  enctype="multipart/form-data">
-            {{ form.hidden_tag() }}
-         
-                
-                    {{ form.title .label() }}
-                    {% if form.title.errors %}
-                        {{ form.title() }}
-                       
-                            {% for error in form.title.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.title() }}
-                    {% endif %}
-              
-              
-                    {{ form.content.label() }}
-                    {% if form.content.errors %}
-                        {{ form.content() }}
-                       
-                            {% for error in form.content.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                      
-                    {% else %}
-                        {{ form.content() }}
-                    {% endif %}
-                   
-                   {{ form.tag.label() }}
-                    {{ form.tag() }}
-          
-                   {{ form.picture.label() }}
-                    {{ form.picture() }}
-                        
-            
-            
-                {{ form.submit(class="btn btn-outline-info") }}
-         
-        </form>
- 
+    <div class="create-post-container">
+        <div class="form-container">
+            <form method="POST" action=" " enctype="multipart/form-data">
 
-  
-    
- {% endblock %}
+                {{ form.hidden_tag() }}
+
+                <div class="post-head">
+                    <h1>
+                        Create Post
+                    </h1>
+                </div>
+
+
+                <div class="post-form-title">
+                    <p>{{ form.title .label(class="post-form-title-text") }}</p>
+                </div>
+                {% if form.title.errors %}
+                <div class="error-block">
+                    {{ form.title() }}
+                    {% for error in form.title.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+
+                <div class="post-form-field">
+                    {{ form.title(class="post-form-field-input") }}
+                </div>
+                {% endif %}
+
+
+                <div class="post-form-title">
+                    <p> {{ form.content.label(class="post-form-title-text") }}</p>
+                </div>
+                {% if form.content.errors %}
+                <div class="error-block">
+                    {{ form.content(class="post-form-field-input post-content") }}
+
+                    {% for error in form.content.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+
+                </div>
+                {% else %}
+                <div class="post-form-field">
+                    {{ form.content(class="post-form-field-input post-content") }}
+                </div>
+                {% endif %}
+
+                <div class="post-form-title">
+                    <div class="tag-container">
+
+                        {{ form.tag.label(class="post-form-title-tag") }}
+                        {{ form.tag(class = "post-tag-chosser") }}
+                    </div>
+                </div>
+
+                <div class="post-form-title">
+                    {{ form.picture.label(class="post-form-title-file") }}
+                </div>
+                <div class="picture-chooser" hidden>{{ form.picture() }}</div>
+
+
+
+                <div class="post-form-title">
+                    {{ form.submit(class="form-submit-button") }}
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

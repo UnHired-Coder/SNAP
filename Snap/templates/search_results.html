@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snap | Search</title>
+</head>
+<body>
+    {%if result%}
+    {% for user_i in users%}
+
+    <h1>{{user_i.username}}</h1>
+    {% endfor%}
+    {% else %}
+    <h1>No Results Found!</h1>
+    {% endif%}
+</body>
+</html>

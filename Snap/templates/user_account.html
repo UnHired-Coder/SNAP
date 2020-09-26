@@ -1,185 +1,84 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snap | User Acount</title>
 
-{%block body%}
-{% if post.author.image_url %}
-<img src="{{post.author.image_url}}">
-{% else %}
-<img src=" {{ image_file}} ">
-{% endif %}
+    <link href="./../static/css/layout.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+</head>
 
-<h1>{{ post.author.username }}</h1>
-<ul>
-  <li>Email:{{post.author.email}}</li>
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-<li>Bio:{{post.author.bio}}</li>
-<li>Followers:{{post.author.following_by.count()}}</li>
-<li>Following:{{post.author.following_to.count()}}</li>
-<li>Link:{{post.author.Link_facebook}}</li>
-</ul>
+    <a style="border:none" href="{{ url_for('home')}}"><button class="back-button">&#8249;</button></a>
 
+    <div class="profile-container">
 
-{% if post.author==current_user %}
+        <div class="profile-details-block">
 
-<form method= "POST"   id="form"  enctype="multipart/form-data">
-
-      <button    id="closebutton" class="button" onclick="closeForm()">Close</button>
-        {{ form.hidden_tag() }}
-
-
-
-
-         <fieldset class="form-group">
-
-
-
-
-             <legend >Account Info</legend>
-
-
-
-       <div class="content-section">
-           <div>
-            {{ form.username.label(class="label") }}
-
-
-            {% if form.username.errors %}
-
-            {{ form.username(class="input")}}
-
-               <div >
-
-                      {% for error in form.username.errors %}
-
-                      <span>{{ error }}</span>
-
-                      {% endfor %}
-
-               </div>
-
-                      {% else %}
-
-                      {{ form.username(class="input")}}
-
-                      {% endif %}
-
-             </div>
-
-
-
-          <div class="form-group">
-
-              {{ form.email.label(class="label") }}
-
-              {% if form.email.errors %}
-
-              {{ form.email(class="input") }}
-
-               <div >
-
-                   {% for error in form.email.errors %}
-
-                    <span>{{ error }}</span>
-
-                   {% endfor %}
-
-                </div>
-
-               {% else %}
-
-               {{ form.email(class="input") }}
-
-               {% endif %}
-
+            <div class="profile-image-container">
+                
+                {% if post.author.image_url %}
+                <img src="{{post.author.image_url}}">
+                {% else %}
+                <img src="./../static/profile_pics/{{post.author.image_file}}">
+                {% endif %}
+                <!-- <div class="profile-name-block"></div> -->
+                <h1>{{ post.author.username }}</h1>
             </div>
-            <div class="form-group">
-
-                {{ form.bio.label(class="label") }}
-
-                {% if form.bio.errors %}
-
-                {{ form.bio(class="input") }}
-
-                 <div >
-
-                     {% for error in form.bio.errors %}
-
-                      <span>{{ error }}</span>
-
-                     {% endfor %}
-
-                  </div>
-
-                 {% else %}
-
-                 {{ form.bio(class="input") }}
-
-                 {% endif %}
-
-              </div>
-              <div class="form-group">
-
-                  {{ form.link.label(class="label") }}
-
-                  {% if form.link.errors %}
-
-                  {{ form.link(class="input") }}
-
-                   <div >
-
-                       {% for error in form.link.errors %}
-
-                        <span>{{ error }}</span>
-
-                       {% endfor %}
-
-                    </div>
-
-                   {% else %}
-
-                   {{ form.link(class="input") }}
-
-                   {% endif %}
-
-                </div>
+        </div>
 
 
 
+        <div class="profile-content-block">
 
-      <div class="form-group">
+            <ul>
+                <li>
+                    <p>
+                        <span>Email: </span>{{post.author.email}}
+                    </p>
+                </li>
 
-           {{ form.picture.label(class="label") }}
+                <li>
+                    <p>
+                        <span>Bio: </span>{{post.author.bio}}
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <span>Followers: </span>{{post.author.following_by.count()}}
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <span>Following: </span>{{post.author.following_to.count()}}
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <span>Link: </span><a href="{{post.author.Link_facebook}}">{{post.author.Link_facebook}}</a>
+                    </p>
+                </li>
+            </ul>
+        </div>
 
-           {{ form.picture(class="input") }}
+    </div>
 
-             {% if form.picture.errors %}
+    <div class="space-block"></div>
 
-                {% for error in form.picture.errors %}
+</body>
 
-                    <span>{{ error }}</span>
-
-                {% endfor %}
-
-             {% endif%}
-       </div>
-
-
-
-
-       <div class="form-group">
-
-           {{ form.submit() }}
-
-       </div>
-
-</div>
-
-
-</fieldset>
-
-</form>
-{% endif %}
-
-
-
-{%endblock%}
+</html>

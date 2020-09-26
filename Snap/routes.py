@@ -369,5 +369,9 @@ def post(post_id):
 
 @app.route("/search")
 def search():
-    users=User.query.whoosh_search(request.args.get('query')).all()
-    return render_template('home.html', susers=users)
+    q = request.args.get('query')
+    susers=User.query.whoosh_search(q).all()
+    res = True
+    if len(susers) == 0:
+        res = False
+    return render_template('search_results.html', users=susers,result = res)
