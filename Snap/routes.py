@@ -23,7 +23,6 @@ socketio = SocketIO(app, async_mode=async_mode)
 
 
 
-print('3')
 @login_required
 @app.route("/home",methods=['GET','POST'])
 def home():
@@ -31,14 +30,12 @@ def home():
     posts = Post.query.all()
     #comments = Comments.query.all()
     return render_template('home.html',title='Home', posts=posts,user=user)
-print('3')
 
 
 @app.route("/about")
 def about():
     return render_template('about.html',title='About')
 
-print('3')
 @app.route("/register",methods=['GET','POST'])
 def register():
      if current_user.is_authenticated:
@@ -52,7 +49,7 @@ def register():
         return redirect(url_for('login'))
      return render_template("register.html", title='Register', form=form)
 
-print('2')
+ 
 @app.route("/")
 @app.route("/login",methods=['GET','POST'])
 def login():
@@ -66,30 +63,6 @@ def login():
 
             return  redirect(url_for('home'))
     return render_template("login.html", title="Login", form=form)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -113,20 +86,20 @@ google = oauth.remote_app(
     authorize_url='https://accounts.google.com/o/oauth2/auth',
 )
 
-print('2')
+ 
 
 @app.route('/login_google')
 def login_google():
     return google.authorize(callback=url_for('authorized', _external=True))
 
-print('2')
+ 
 @app.route('/logout')
 def logout():
     session.pop('google_token', None)
     logout_user()
     return redirect(url_for('login'))
 
-print('2')
+ 
 @app.route('/login/authorized')
 def authorized():
     resp = google.authorized_response()
@@ -150,7 +123,7 @@ def authorized():
     login_user(user, remember=False)
     return  redirect(url_for('home'))
 
-print('2')
+ 
 @google.tokengetter
 def get_google_oauth_token():
     return session.get('google_token')

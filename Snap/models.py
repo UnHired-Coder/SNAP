@@ -40,17 +40,19 @@ class User(db.Model,UserMixin):
 
     def follow_user(self, user):
         if not self.isfollowingto(user):
-            user = Following_to(from_user_id=self.id, to_user=user)
-            db.session.add(user)
+            userr = Following_to(from_user_id=self.id, to_user=user)
+            db.session.add(userr)
+            userr = Following_by(from_user_id=user, to_user=self.id)
+            db.session.add(userr)
 
     def unfollow_user(self, user):
         if  self.isfollowingto(user):
             user = Following_to.query.filter_by(
             from_user_id=self.id,
             to_user=user).delete()
-
-
-
+            user = Following_by.query.filter_by(
+            from_user_id=user,
+            to_user=self.id).delete()
 
 
     def like_post(self, post):
