@@ -101,21 +101,23 @@
                 <div class="post">
                     <div class="post-author">
                         <img src="static/profile_pics/{{ post.author.image_file }}"></img>
-                        <a href="{{url_for('user_account',post_id=post.id)}}">
+                        <a href="{{url_for('user_account',user_id=post.author.id)}}">
                             <p>{{post.author.username}} <p style="color: burlywood; font-size: 16px;"> is feeling <p>
                                     </p>
                         </a>
                         <p>{{ post.tag}}</p>
                         <p>| {{ post.date_posted.strftime('%Y-%m-%d')}}</p>
                         <div class="follow-block">
-                            <button hidden user_id="{{ post.author.id }}" action="unfollow" type="submit"
-                                class="post-button  uflo fbtn2{{ post.author.id}}"><span
-                                    class="glyphicon glyphicon-send"></span>
-                                unfollow</button>
-                            <button hidden user_id="{{ post.author.id }}" action="follow" type="submit"
-                                class="post-button flo fbtn1{{ post.author.id}}"><span
-                                    class="glyphicon glyphicon-send"></span>
-                                follow</button>
+                           {% if post.author.id != current_user.id %}
+                           <button hidden user_id="{{ post.author.id }}" action="unfollow" type="submit"
+                           class="post-button  uflo fbtn2{{ post.author.id}}"><span
+                               class="glyphicon glyphicon-send"></span>
+                           unfollow</button>
+                             <button hidden user_id="{{ post.author.id }}" action="follow" type="submit"
+                           class="post-button flo fbtn1{{ post.author.id}}"><span
+                               class="glyphicon glyphicon-send"></span>
+                           follow</button>
+                           {% endif%}
                         </div>
                     </div>
 
@@ -193,7 +195,7 @@
 
                             <input type="text" class="message{{post.id}} comment-input-box form-control"
                                 placeholder=" comment..">
-                            <button type="submit" user_nameis="{{ post.author.username }}" post_id="{{ post.id }}"
+                            <button type="submit" user_nameis="{{ current_user.username }}" post_id="{{ post.id }}"
                                 class="btnc{{post.id}}   cmt"> Send &nbsp; 💬</button>
                         </form>
                     </div>
@@ -203,7 +205,7 @@
                     <div class="comments-block">
                         {% for comm in post.post_comment_list(post) %}
                         <div class="comment_holder ">
-                            <p>{{ comm.comment_author.author.username }}: </p>
+                            <p>{{ comm.author_name }}: </p>
                             <p>{{ comm.comment}}</p>
                         </div>
                         {% endfor %}

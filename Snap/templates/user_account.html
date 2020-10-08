@@ -31,13 +31,13 @@
 
             <div class="profile-image-container">
                 
-                {% if post.author.image_url %}
-                <img src="{{post.author.image_url}}">
+                {% if user.image_url %}
+                <img src="{{user.image_url}}">
                 {% else %}
-                <img src="./../static/profile_pics/{{post.author.image_file}}">
+                <img src="./../static/profile_pics/{{user.image_file}}">
                 {% endif %}
                 <!-- <div class="profile-name-block"></div> -->
-                <h1>{{ post.author.username }}</h1>
+                <h1>{{ user.username }}</h1>
             </div>
         </div>
 
@@ -48,28 +48,28 @@
             <ul>
                 <li>
                     <p>
-                        <span>Email: </span>{{post.author.email}}
+                        <span>Email: </span>{{user.email}}
                     </p>
                 </li>
 
                 <li>
                     <p>
-                        <span>Bio: </span>{{post.author.bio}}
+                        <span>Bio: </span>{{user.bio}}
                     </p>
                 </li>
                 <li>
                     <p>
-                        <span>Followers: </span>{{post.author.following_by.count()}}
+                        <span>Followers: </span>{{user.following_by_count(user.id)}}
                     </p>
                 </li>
                 <li>
                     <p>
-                        <span>Following: </span>{{post.author.following_to.count()}}
+                        <span>Following: </span>{{user.following_to_count(user.id)}}
                     </p>
                 </li>
                 <li>
                     <p>
-                        <span>Link: </span><a href="{{post.author.Link_facebook}}">{{post.author.Link_facebook}}</a>
+                        <span>Link: </span><a href="{{user.Link_facebook}}">{{user.Link_facebook}}</a>
                     </p>
                 </li>
             </ul>

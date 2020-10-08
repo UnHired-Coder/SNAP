@@ -8,19 +8,13 @@ import secrets
 from PIL import Image
 from PIL import Image
 
-
-
 from flask import Flask, session, jsonify
 from flask_oauthlib.client import OAuth
 
 from flask_socketio import SocketIO
-
-#socketio = SocketIO()
 async_mode=None
 
 socketio = SocketIO(app, async_mode=async_mode)
-
-
 
 
 @login_required
@@ -30,7 +24,6 @@ def home():
     posts = Post.query.all()
     #comments = Comments.query.all()
     return render_template('home.html',title='Home', posts=posts,user=user)
-
 
 @app.route("/about")
 def about():
@@ -49,7 +42,6 @@ def register():
         return redirect(url_for('login'))
      return render_template("register.html", title='Register', form=form)
 
- 
 @app.route("/")
 @app.route("/login",methods=['GET','POST'])
 def login():
@@ -63,8 +55,6 @@ def login():
 
             return  redirect(url_for('home'))
     return render_template("login.html", title="Login", form=form)
-
-
 
 app.config['GOOGLE_ID'] = "612662773449-dvcnkiev2n9q3if6pp0jdrsp8j94k6a0.apps.googleusercontent.com"
 app.config['GOOGLE_SECRET'] = "aSg4XneVXt6LwzksGY9j6bC3"
@@ -86,20 +76,16 @@ google = oauth.remote_app(
     authorize_url='https://accounts.google.com/o/oauth2/auth',
 )
 
- 
-
 @app.route('/login_google')
 def login_google():
     return google.authorize(callback=url_for('authorized', _external=True))
 
- 
 @app.route('/logout')
 def logout():
     session.pop('google_token', None)
     logout_user()
     return redirect(url_for('login'))
 
- 
 @app.route('/login/authorized')
 def authorized():
     resp = google.authorized_response()
@@ -123,11 +109,9 @@ def authorized():
     login_user(user, remember=False)
     return  redirect(url_for('home'))
 
- 
 @google.tokengetter
 def get_google_oauth_token():
     return session.get('google_token')
-
 
 def save_picture_profile(form_picture):
     random_hex = secrets.token_hex(8)
@@ -140,8 +124,6 @@ def save_picture_profile(form_picture):
     i.save(picture_path)
 
     return picture_fn
-
-
 
 @app.route("/account", methods=['GET','POST'])
 @login_required
@@ -169,9 +151,6 @@ def account():
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template("account.html", title="Account",form=form ,image_file = image_file)
 
-
-
-
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
@@ -183,9 +162,6 @@ def save_picture(form_picture):
     i.save(picture_path)
 
     return picture_fn
-
-
-
 
 @app.route("/post/new", methods=['GET','POST'])
 @login_required
@@ -204,52 +180,21 @@ def new_post():
 
     return render_template('create_post.html', title= 'NewPost', form=form)
 
-
-
-
-
-
-
-@app.route('/account/<int:post_id>',methods=['GET','POST'])
+@app.route('/account/<int:user_id>',methods=['GET','POST'])
 @login_required
-def user_account(post_id):
-    post = Post.query.filter_by(id=post_id).first_or_404()
+def user_account(user_id):
+    if user_id is current_user.id:
+        return redirect(url_for('account'))
+        return
+    user = User.query.filter_by(id=user_id).first_or_404()
     form = UpdateAccountForm()
-    if form.validate_on_submit():
-        if form.picture.data:
-
-            picture_file = save_picture_profile(form.picture.data)
-            current_user.image_file = picture_file
-
-        current_user.username = form.username.data
-        current_user.email = form.email .data
-        current_user.bio = form.bio .data
-        current_user.Link_facebook = form.link.data
-        db.session.commit()
-
-    #    flash(f'your account has been updated! ')
-        return redirect(url_for('user_account',post_id=post.id))
-    elif request.method == 'GET':
+    if request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
         form.bio .data= current_user.bio
         form.link.data=current_user.Link_facebook
-    image_file = url_for('static', filename='profile_pics/' + post.author.image_file)
-    return render_template("user_account.html",post=post,form=form,image_file=image_file)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    image_file = url_for('static', filename='profile_pics/' + user.image_file)
+    return render_template("user_account.html",user=user,form=form,image_file=image_file)
 
 @app.route('/like/<int:post_id>/<action>')
 @login_required
@@ -263,15 +208,12 @@ def like_action(post_id, action):
         db.session.commit()
     return redirect(request.referrer)
 
-
-
 def messageRecived():
     print( 'message was received!!!' )
 
 @socketio.on( 'my event_is' )
 def handle_my_custom_event( json ):
-    print("---------------initialize data here------------------")
-
+    print("-initialize data here-")
 
 @socketio.on( 'my event' )
 def handle_my_custom_event( json ):
@@ -282,17 +224,8 @@ def handle_my_custom_event( json ):
     if json.get('action') == 'unlike':
         current_user.unlike_post(post)
         db.session.commit()
-    print( '-----------------------------------------recived my event:---------------------------- ' + str( json ) )
-    print( 'recived my event:------------- ' + str( json.get('post_id')) )
-
-
-
+    print( 'recived my event:' + str( json.get('post_id')) )
     socketio.emit( 'my response', json, callback=messageRecived )
-
-
-
-
-
 
 @socketio.on( 'my fevent' )
 def handle_my_custom_fevent( json ):
@@ -303,48 +236,29 @@ def handle_my_custom_fevent( json ):
     if json.get('action') == 'unfollow':
         current_user.unfollow_user(user.id)
         db.session.commit()
-    print( '-----------------------------------------recived my event:---------------------------- ' + str( json ) )
-    print( 'recived my event:------------- ' + str( json.get('user_id')) )
-
-
-
+    print( str( json ))
     socketio.emit( 'my fresponse', json, callback=messageRecived )
-
-
-
-
-
-
-
-
-
 
 @socketio.on( 'my_comment event' )
 def handle_my( json ):
     post = Post.query.filter_by(id=json.get('post_id')).first_or_404()
 
-    post.make_comment(json.get('message'))
+    post.make_comment(json.get('message'),json.get('user_name'))
     db.session.commit()
-    print( '==================recived my event:=========== ' + str( json ) )
+    print(str( json ) )
     socketio.emit( 'my_comment response', json, callback=messageRecived )
-
-
-
-
-
 
 @app.route("/post/<int:post_id>")
 def post(post_id):
     post = Post.query.get_or_404(post_id)
     return render_template('post.html', title=post.title, post= post)
 
-
-
 @app.route("/search")
 def search():
     q = request.args.get('query')
-    susers=User.query.whoosh_search(q).all()
+    susers = User.query.msearch(q).all()
+    print(len(susers))
     res = True
-    if len(susers) == 0:
+    if not len(susers):
         res = False
     return render_template('search_results.html', users=susers,result = res)

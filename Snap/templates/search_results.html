@@ -1,18 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snap | Search</title>
-</head>
-<body>
-    {%if result%}
-    {% for user_i in users%}
+    <link href="./../static/css/layout.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
 
-    <h1>{{user_i.username}}</h1>
-    {% endfor%}
-    {% else %}
-    <h1>No Results Found!</h1>
-    {% endif%}
+</head>
+
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <div class="back-button-about">
+        <a  style="border:none" href="{{ url_for('home')}} "><button class="back-button" >&#8249;</button></a>  
+    </div>
+    <div class="search-results-block">
+        <h1 class="search-header">
+            Search Results
+        </h1>
+        {%if result%}
+        {% for user_i in users%}
+        <div class="result-container">
+            {% if user_i.image_url%}
+            <img src="{{user_i.image_url}}" alt="">
+            {% else %}
+            <img src=" static/profile_pics/{{ user_i.image_file }}" alt="">
+            {% endif %}
+            <span class="result_container_span">
+                <h1>
+                    <a href="{{url_for('user_account',user_id=user_i.id)}}">
+                    {{user_i.username}}</a>
+
+                </h1>
+                <p>
+                    {% if user_i.bio %}
+                    {{user_i.bio}}
+                    {% endif %}
+                </p>
+            </span>
+        </div>
+        {% endfor%}
+        {% else %}
+        <div class="no-search-results">
+            <h1>No Results Found!</h1>
+        </div>
+        {% endif%}
+    </div>
 </body>
+
 </html>

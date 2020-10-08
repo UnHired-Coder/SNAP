@@ -57,12 +57,12 @@
                 </li>
                 <li>
                     <p>
-                        <span>Followers: </span>{{current_user.following_by.count()}}
+                        <span>Followers: </span>{{current_user.following_by_count(current_user.id)}}
                     </p>
                 </li>
                 <li>
                     <p>
-                        <span>Following: </span>{{current_user.following_to.count()}}
+                        <span>Following: </span>{{current_user.following_to_count(current_user.id)}}
                     </p>
                 </li>
                 <li>

@@ -3,18 +3,16 @@ from Snap import db
 from datetime import datetime
 from flask_login import UserMixin
 from Snap import db,login_manager,app
-import flask_whooshalchemy
+from flask_msearch import Search
+from flask_login import current_user
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-
 class User(db.Model,UserMixin):
     __tablename__= 'user'
     __searchable__= ['username']
-
-
 
     id = db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(20),unique=True, nullable=False)
@@ -25,7 +23,7 @@ class User(db.Model,UserMixin):
     bio= db.Column(db.String(200))
 
     following_to = db.relationship('Following_to',backref='to_author', lazy='dynamic')
-    following_by = db.relationship('Following_by',backref='by_author', lazy='dynamic')
+    # following_by = db.relationship('Following_by',backref='by_author', lazy='dynamic')
 
     Link_facebook = db.Column(db.String(120),default='#')
     Link_twitter = db.Column(db.String(120),default='#')
@@ -34,15 +32,23 @@ class User(db.Model,UserMixin):
     post = db.relationship('Post', backref='author', lazy=True)
 
 
-    def isfollowingto(self,userid):
+    def isfollowingto(self, userid):
         return Following_to.query.filter(Following_to.from_user_id == self.id,
                                         Following_to.to_user == userid ).count()>0
+     
+    def following_by_count(self, userid):
+        return Following_to.query.filter_by(
+                to_user=userid,
+                ).count()
+    
+    def following_to_count(self, userid):
+        return Following_to.query.filter_by(
+                from_user_id=userid,
+                ).count()
 
     def follow_user(self, user):
         if not self.isfollowingto(user):
             userr = Following_to(from_user_id=self.id, to_user=user)
-            db.session.add(userr)
-            userr = Following_by(from_user_id=user, to_user=self.id)
             db.session.add(userr)
 
     def unfollow_user(self, user):
@@ -50,9 +56,6 @@ class User(db.Model,UserMixin):
             user = Following_to.query.filter_by(
             from_user_id=self.id,
             to_user=user).delete()
-            user = Following_by.query.filter_by(
-            from_user_id=user,
-            to_user=self.id).delete()
 
 
     def like_post(self, post):
@@ -71,13 +74,8 @@ class User(db.Model,UserMixin):
             PostLike.user_id == self.id,
             PostLike.post_id == post.id).count() > 0
 
-
-
     def __repr__(self):
         return f"User('{self.username}','{self.email}','{self.image_file}','{self.image_url}','{self.post}','{self.bio}','{self.following_to}','{self.following_by}','{self.Link_facebook}','{self.Link_twitter}','{self.Link_other}')"
-
-flask_whooshalchemy.whoosh_index(app, User)
-
 
 class Following_to(db.Model):
     id= db.Column(db.Integer,primary_key=True)
@@ -87,16 +85,13 @@ class Following_to(db.Model):
     def __repr__(self):
         return f"Following_to('{self.from_user_id}','{self.to_user}')"
 
+# class Following_by(db.Model):
+#     id= db.Column(db.Integer,primary_key=True)
+#     to_user= db.Column(db.Integer,db.ForeignKey('user.id'), nullable=False)
+#     from_user_id= db.Column(db.Integer, nullable=False)
 
-
-class Following_by(db.Model):
-    id= db.Column(db.Integer,primary_key=True)
-    to_user= db.Column(db.Integer,db.ForeignKey('user.id'), nullable=False)
-    from_user_id= db.Column(db.Integer, nullable=False)
-
-    def __repr__(self):
-        return f"Following_by('{self.from_user_id}','{self.to_user}')"
-
+#     def __repr__(self):
+#         return f"Following_by('{self.from_user_id}','{self.to_user}')"
 
 class Post(db.Model):
     id= db.Column(db.Integer,primary_key=True)
@@ -110,9 +105,8 @@ class Post(db.Model):
     tag = db.Column(db.String(50),nullable=False)
     post_comment = db.relationship('Comments', backref='comment_author',lazy='dynamic')
 
-    def make_comment(self,data):
-
-        newComment = Comments(user_id=self.author.id, post_id=self.id,comment=data)
+    def make_comment(self,data, author):
+        newComment = Comments(author_name = author,user_id = current_user.id, post_id=self.id,comment=data)
         db.session.add(newComment)
 
     def post_comment_list(self, post):
@@ -128,6 +122,7 @@ class Post(db.Model):
 class Comments(db.Model):
     id= db.Column(db.Integer,primary_key=True)
     comment= db.Column(db.String(100))
+    author_name = db.Column(db.String(20), nullable=False)
     post_id= db.Column(db.Integer,db.ForeignKey('post.id'))
     user_id= db.Column(db.Integer, db.ForeignKey('user.id'))
 
