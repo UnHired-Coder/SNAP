@@ -1,5 +1,5 @@
 # SNAP
-Mini Blog/Social website using FLASK
+Mini Blog website using FLASK
 
  ![Snap | Home](https://user-images.githubusercontent.com/42827589/95486030-2388e400-09b0-11eb-880c-9379a1b88fc9.png)
 
